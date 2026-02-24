@@ -1,0 +1,43 @@
+// features/support/schemas/user_show_success.json
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "user_show_success.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "email",
+    "shipping_address_line_1",
+    "shipping_address_line_2",
+    "shipping_address_postal_code",
+    "shipping_address_town",
+    "shipping_address_county",
+    "shipping_address_country",
+    "business_address_line_1",
+    "business_address_line_2",
+    "business_address_postal_code",
+    "business_address_town",
+    "business_address_county",
+    "business_address_country"
+  ],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string", "minLength": 1 },
+    "email": { "type": "string", "format": "email" },
+
+    "shipping_address_line_1": { "type": "string" },
+    "shipping_address_line_2": { "type": "string" },
+    "shipping_address_postal_code": { "type": "string" },
+    "shipping_address_town": { "type": "string" },
+    "shipping_address_county": { "type": "string" },
+    "shipping_address_country": { "type": "string", "minLength": 2 },
+
+    "business_address_line_1": { "type": "string" },
+    "business_address_line_2": { "type": "string" },
+    "business_address_postal_code": { "type": "string" },
+    "business_address_town": { "type": "string" },
+    "business_address_county": { "type": "string" },
+    "business_address_country": { "type": "string", "minLength": 2 }
+  }
+}
