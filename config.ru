@@ -1,6 +1,6 @@
 # This file is used by Rack-based servers to start the application.
 
-$LOAD_PATH << File.expand_path("../lib", __FILE__)
-require "sliding_doors"
+require_relative "config/environment"
 
-run SlidingDoors.application
+run Rails.application
+Rails.application.load_server
