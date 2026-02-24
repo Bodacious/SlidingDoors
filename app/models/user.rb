@@ -42,7 +42,11 @@ class User < ApplicationRecord
     end.select(&:present?).join("\n")
   end
 
+  private
+
   def shipping_address_usable?
-    true
+    shipping_address_line_1? &&
+      shipping_address_postcode? &&
+      shipping_address_country?
   end
 end
