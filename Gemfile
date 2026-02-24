@@ -22,3 +22,5 @@ end
 gem "faker", "~> 3.6"
 
 gem "factory_bot_rails", "~> 6.5"
+
+gem "annotate_model", "~> 1.0"
