@@ -16,7 +16,7 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Shipping address 1"
   end
 
-  test "should fall back on business address for User if shipping not usable" do
+  test "should fall back on business address for User if shipping not deliverable" do
     user = create(:user,
                   # Return the shipping address
                   shipping_address_line_1: "Shipping address 1",

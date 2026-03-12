@@ -21,7 +21,7 @@
 # ==
 class User < ApplicationRecord
   def best_correspondence_address
-    if shipping_address_usable?
+    if shipping_address_deliverable?
       [
         shipping_address_line_1,
         shipping_address_line_2,
@@ -44,7 +44,7 @@ class User < ApplicationRecord
 
   private
 
-  def shipping_address_usable?
+  def shipping_address_deliverable?
     shipping_address_line_1? &&
       shipping_address_postcode? &&
       shipping_address_country?
