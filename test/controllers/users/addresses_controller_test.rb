@@ -30,4 +30,17 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, "Billing address 1"
   end
+
+  test "should respond 404 if neither address is deliverable" do
+    user = create(:user,
+                  shipping_address_line_1: "",
+                  shipping_address_postcode: "",
+                  billing_address_line_1: "",
+                  billing_address_postcode: "")
+
+    get "/users/#{user.id}/addresses/correspondence"
+
+    assert_response :not_found
+    assert_includes response.body, "Error:"
+  end
 end

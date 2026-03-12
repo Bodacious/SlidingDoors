@@ -29,8 +29,8 @@ class User < ApplicationRecord
         shipping_address_town,
         shipping_address_county,
         shipping_address_country
-      ]
-    else
+      ].select(&:present?).join("\n")
+    elsif billing_address_deliverable?
       [
         billing_address_line_1,
         billing_address_line_2,
@@ -38,15 +38,19 @@ class User < ApplicationRecord
         billing_address_town,
         billing_address_county,
         billing_address_country
-      ]
-    end.select(&:present?).join("\n")
+      ].select(&:present?).join("\n")
+    else
+      nil
+    end
   end
 
   private
 
   def shipping_address_deliverable?
-    shipping_address_line_1? &&
-      shipping_address_postcode? &&
-      shipping_address_country?
+    shipping_address_line_1? && shipping_address_postcode?
+  end
+
+  def billing_address_deliverable?
+    billing_address_line_1? && billing_address_postcode?
   end
 end
