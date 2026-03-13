@@ -20,37 +20,38 @@
 # updated_at :datetime        not null
 # ==
 class User < ApplicationRecord
+  ##
+  # The best address to use for correspondence.
+  #
+  # @return [Address, nil]
   def best_correspondence_address
-    if shipping_address_deliverable?
-      [
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_address_postcode,
-        shipping_address_town,
-        shipping_address_county,
-        shipping_address_country
-      ].select(&:present?).join("\n")
-    elsif billing_address_deliverable?
-      [
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_address_postcode,
-        billing_address_town,
-        billing_address_county,
-        billing_address_country
-      ].select(&:present?).join("\n")
-    else
-      nil
-    end
+    [
+      shipping_address,
+      billing_address
+    ].find(&:deliverable?)
   end
 
-  private
-
-  def shipping_address_deliverable?
-    shipping_address_line_1? && shipping_address_postcode?
+  def shipping_address
+    @shipping_address ||=
+      Address.new(
+      line_1: shipping_address_line_1,
+      line_2: shipping_address_line_2,
+      postcode: shipping_address_postcode,
+      town: shipping_address_town,
+      county: shipping_address_county,
+      country: shipping_address_country,
+    )
   end
 
-  def billing_address_deliverable?
-    billing_address_line_1? && billing_address_postcode?
+  def billing_address
+    @billing_address ||=
+    Address.new(
+      line_1: billing_address_line_1,
+      line_2: billing_address_line_2,
+      postcode: billing_address_postcode,
+      town: billing_address_town,
+      county: billing_address_county,
+      country: billing_address_country,
+      )
   end
 end

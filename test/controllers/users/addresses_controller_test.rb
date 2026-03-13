@@ -20,7 +20,7 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
     user = create(:user,
                   # Return the shipping address
                   shipping_address_line_1: "Shipping address 1",
-                  shipping_address_postcode: "", #intentionally blank
+                  shipping_address_postcode: "", # intentionally blank
                   # Do not return the billing address
                   billing_address_line_1: "Billing address 1",
                   billing_address_postcode: "AB45 5XY")
