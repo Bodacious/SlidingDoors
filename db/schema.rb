@@ -10,7 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_24_211604) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_13_163749) do
+  create_table "merchants", force: :cascade do |t|
+    t.string "shipping_address_line_1"
+    t.string "shipping_address_line_2"
+    t.string "shipping_address_postcode"
+    t.string "shipping_address_town"
+    t.string "shipping_address_county"
+    t.string "shipping_address_country"
+    t.string "billing_address_line_1"
+    t.string "billing_address_line_2"
+    t.string "billing_address_postcode"
+    t.string "billing_address_town"
+    t.string "billing_address_county"
+    t.string "billing_address_country"
+    t.string "registered_address_line_1"
+    t.string "registered_address_line_2"
+    t.string "registered_address_postcode"
+    t.string "registered_address_town"
+    t.string "registered_address_county"
+    t.string "registered_address_country"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
