@@ -1,14 +1,22 @@
 # frozen_string_literal: true
 
-class Address
-  def initialize(line_1:, line_2:, postcode:, town:, county:, country:)
-    @line_1 = line_1
-    @line_2 = line_2
-    @postcode = postcode
-    @town = town
-    @county = county
-    @country = country
-  end
+# == Schema Information
+#
+# id              :integer         not null
+# line_1          :string
+# line_2          :string
+# postcode        :string
+# town            :string
+# county          :string
+# country         :string
+# address_type    :string
+# addressable_id  :integer         not null
+# addressable_type:string          not null
+# created_at      :datetime        not null
+# updated_at      :datetime        not null
+# ==
+class Address < ApplicationRecord
+  belongs_to :addressable, polymorphic: true
 
   ##
   # A basic check to make sure that an address is actually deliverable
@@ -19,19 +27,19 @@ class Address
   end
 
   def to_s
-    [ @line_1, @line_2, @postcode, @town, @county, @country ].select(&:present?).join("\n")
+    [ line_1, line_2, postcode, town, county, country ].select(&:present?).join("\n")
   end
 
   private
 
   def deliverability_check
-    case @country
+    case country
     when "United Kingdom"
       DeliverabilityChecks::UnitedKingdomDeliverabilityCheck
     when "Australia"
       DeliverabilityChecks::AustraliaDeliverabilityCheck
     else
       DeliverabilityChecks::DeliverabilityCheck
-    end.new(line_1: @line_1, line_2: @line_2, postcode: @postcode, town: @town, county: @county, country: @country)
+    end.new(line_1: line_1, line_2: line_2, postcode: postcode, town: town, county: county, country: country)
   end
 end

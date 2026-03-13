@@ -2,13 +2,9 @@ require "test_helper"
 
 class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
   test "should get best correspondence address for User (UK)" do
-    user = create(:user,
-                             # Return the shipping address
-                             shipping_address_line_1: "Shipping address 1",
-                             shipping_address_postcode: "AB12 3CD",
-                             # Do not return the billing address
-                             billing_address_line_1: "Billing address 1",
-                             billing_address_postcode: "AB45 5XY")
+    user = create(:user)
+    create(:address, :shipping, :uk, addressable: user, line_1: "Shipping address 1", postcode: "AB12 3CD")
+    create(:address, :billing, :uk, addressable: user, line_1: "Billing address 1", postcode: "AB45 5XY")
 
     get "/users/#{user.id}/addresses/correspondence"
 
@@ -17,13 +13,9 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should fall back on business address for User if shipping not deliverable (UK)" do
-    user = create(:user,
-                  # Return the shipping address
-                  shipping_address_line_1: "Shipping address 1",
-                  shipping_address_postcode: "", # intentionally blank
-                  # Do not return the billing address
-                  billing_address_line_1: "Billing address 1",
-                  billing_address_postcode: "AB45 5XY")
+    user = create(:user)
+    create(:address, :shipping, :uk, addressable: user, line_1: "Shipping address 1", postcode: "") # postcode blank
+    create(:address, :billing, :uk, addressable: user, line_1: "Billing address 1", postcode: "AB45 5XY")
 
     get "/users/#{user.id}/addresses/correspondence"
 
@@ -32,13 +24,9 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get best correspondence address for User (Australia)" do
-    user = create(:user,
-                  # Return the shipping address
-                  shipping_address_line_1: "Shipping address 1",
-                  shipping_address_postcode: "AB12 3CD",
-                  # Do not return the billing address
-                  billing_address_line_1: "Billing address 1",
-                  billing_address_postcode: "AB45 5XY")
+    user = create(:user)
+    create(:address, :shipping, :australia, addressable: user, line_1: "Shipping address 1", postcode: "2000")
+    create(:address, :billing, :australia, addressable: user, line_1: "Billing address 1", postcode: "3000")
 
     get "/users/#{user.id}/addresses/correspondence"
 
@@ -47,19 +35,9 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should fall back on business address for User if shipping not deliverable (Australia)" do
-    user = create(:user,
-                  # Return the shipping address
-                  shipping_address_line_1: "Shipping address 1",
-                  shipping_address_line_2: "", # intentionally blank
-                  shipping_address_postcode: "2001",
-                  shipping_address_county: "",
-                  shipping_address_country: "Australia",
-                  # Do not return the billing address
-                  billing_address_line_1: "Billing address 1",
-                  billing_address_line_2: "Suburbia",
-                  billing_address_postcode: "3001",
-                  billing_address_county: "Victoria",
-                  billing_address_country: "Australia")
+    user = create(:user)
+    create(:address, :shipping, :australia, addressable: user, line_1: "Shipping address 1", postcode: "2000", county: "", country: "Australia")
+    create(:address, :billing, :australia, addressable: user, line_1: "Billing address 1", postcode: "3000", county: "Victoria", country: "Australia")
 
     get "/users/#{user.id}/addresses/correspondence"
 
@@ -67,14 +45,19 @@ class Users::AddressesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Billing address 1"
   end
 
+  test "should respond 404 if neither address exists" do
+    user = create(:user)
+
+    get "/users/#{user.id}/addresses/correspondence"
+
+    assert_response :not_found
+    assert_includes response.body, "Error:"
+  end
+
   test "should respond 404 if neither address is deliverable" do
-    user = create(:user,
-                  shipping_address_line_1: "",
-                  shipping_address_postcode: "",
-                  shipping_address_country: "United Kingdom",
-                  billing_address_line_1: "",
-                  billing_address_postcode: "",
-                  billing_address_country: "United Kingdom",)
+    user = create(:user)
+    create(:address, :shipping, :uk, addressable: user, line_1: "", postcode: "")
+    create(:address, :billing, :uk, addressable: user, line_1: "", postcode: "")
 
     get "/users/#{user.id}/addresses/correspondence"
 
