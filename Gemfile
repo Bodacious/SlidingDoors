@@ -24,5 +24,6 @@ group :development, :test do
   gem "guard", "~> 2.20"
   gem "guard-minitest", "~> 3.0"
   gem "guard-rails", "~> 0.8"
-  gem "pessimize", "~> 0.5"
+  gem "pessimize", "~> 0.5", require: false
+  gem "rubocop", "~> 1.85", require: false
 end
