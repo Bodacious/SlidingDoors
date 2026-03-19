@@ -14,7 +14,7 @@ gem "puma", "~> 7.2"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 group :development, :test do
-  gem "minitest", "~> 5.27"
+  gem "minitest", "~> 6.0"
 
   gem "annotate_model", "~> 1.0"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
