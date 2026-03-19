@@ -27,8 +27,8 @@ Introduce a Merchant model that also has addresses. A Merchant has a registered 
 ### R3: Address Normalization
 Split addresses out from the User model into their own table for better data modeling.
 
-### R4: Address Book
-Add the concept of an AddressBook to manage multiple addresses per entity.
+### R4: Latest known (deliverable) address
+Change requirements so that we must deliver to the latest known deliverable address.
 
 ## Comparing the Branches
 
